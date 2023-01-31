@@ -1,11 +1,11 @@
 var topicBlog = 'everything?q=today';
 var url = `https://newsapi.org/v2/${topicBlog}&apiKey=18dd7a002083448496765212c858db73`;
 async function getData(url) {
-    const data = await fetch(url);
+    const data = await fetch(url).then(data=>{return data});
     return await data.json();
 }
 
-export class News {
+class News {
     constructor({ id, author, content, description, publishedDate, title, imgURL }) {
         this.id = id;
         this.author = author;
@@ -14,9 +14,6 @@ export class News {
         this.publishedDate = publishedDate;
         this.title = title;
         this.imgURL = imgURL;
-    }
-    getTitle(){
-        return this.title;
     }
 }
 let homeBlog = document.querySelector('.home');
@@ -57,7 +54,7 @@ businessBlog.addEventListener('click', () => {
 
 
 function fillNewsArr() {
-    data = getData(url);
+    data =  getData(url);
     data.then((res) => {
         for (let i = 0; i < res.articles.length; i++) {
             news.push(new News({
@@ -70,10 +67,12 @@ function fillNewsArr() {
                 imgURL: res.articles[i].urlToImage
             }));
         }
-    });
-    setTimeout(hideFoot, 0);
-    setTimeout(getNews, 2000)
-    setTimeout(showFoot, 2500);
+    }).finally(
+        setTimeout(hideFoot, 0),
+        setTimeout(getNews, 1000),
+        setTimeout(showFoot, 2500)
+    );
+    
 }
 
 let data = getData(url);
