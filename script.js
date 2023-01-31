@@ -53,7 +53,7 @@ businessBlog.addEventListener('click', () => {
 });
 
 
-function fillNewsArr() {
+ function fillNewsArr() {
     data =  getData(url);
     data.then((res) => {
         for (let i = 0; i < res.articles.length; i++) {
@@ -67,11 +67,9 @@ function fillNewsArr() {
                 imgURL: res.articles[i].urlToImage
             }));
         }
-    }).finally(
-        setTimeout(hideFoot, 0),
-        setTimeout(getNews, 1000),
-        setTimeout(showFoot, 2500)
-    );
+    }).finally(()=>{
+        getNews();
+    });
     
 }
 
@@ -87,6 +85,7 @@ function getNews() {
     newsSection.style.padding = '2rem';
     newsSection.style.marginTop = '1rem';
     newsSection.style.overflowX = 'auto';
+    console.log(news.length);
     for (let i = 0; i < news.length; i++) {
         let article = document.createElement('article');
         let articleImage = document.createElement('img');
